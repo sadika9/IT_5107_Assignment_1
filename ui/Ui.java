@@ -14,6 +14,7 @@ public class Ui {
     private JPanel m_gameInfoPanel;
     private JLabel[] m_cellLabels;
     private JLabel m_dieResultLabel;
+    private JLabel m_statusLabel;
     private JButton m_rollButton;
     private JList m_playerList;
 
@@ -96,6 +97,7 @@ public class Ui {
 
     private void setupGameInfoPanel() {
         m_dieResultLabel = new JLabel("Die: -");
+        m_statusLabel = new JLabel("");
 
         m_playerListModel = new DefaultListModel<>();
         updatePlayerListModel();
@@ -117,6 +119,7 @@ public class Ui {
         m_gameInfoPanel.add(Box.createVerticalGlue());
         m_gameInfoPanel.add(m_rollButton);
         m_gameInfoPanel.add(m_dieResultLabel);
+        m_gameInfoPanel.add(m_statusLabel);
         m_gameInfoPanel.add(Box.createVerticalGlue());
     }
 
@@ -129,6 +132,15 @@ public class Ui {
         m_dieResultLabel.setText("Die: " + die.result());
         updatePlayerListModel();
         m_playerList.setSelectedIndex(m_gameLogic.currentPlayerIndex());
+
+        GameLogic.GameState gameState = m_gameLogic.gameState();
+        if (gameState == GameLogic.GameState.Ok) {
+            m_statusLabel.setText("Player moved");
+        } else if (gameState == GameLogic.GameState.CannotMove) {
+            m_statusLabel.setText("Cannot move to position");
+        } else {
+            m_statusLabel.setText("");
+        }
 
         m_gameBoardPanel.repaint();
 

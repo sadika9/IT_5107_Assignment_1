@@ -3,12 +3,22 @@ package core;
 import java.util.ArrayList;
 
 public class GameLogic {
+    public enum GameState {
+        Fresh,
+        UnknownError,
+        PlayerNotAllowedIn,
+        CannotMove,
+        Finish,
+        Ok,
+    }
+
     private Board m_board;
     private Die m_die;
     private Player m_players[];
     private int m_currentPlayerIndex = 0;
     private int m_nextPlayerIndex = 0;
     private boolean m_isWon = false;
+    private GameState m_gameState = GameState.Fresh;
 
     public void init(int moveTos[], int players) {
         m_board = new Board(moveTos);
@@ -50,7 +60,10 @@ public class GameLogic {
     }
 
     public void goToNextState() {
+        m_gameState = GameState.Ok;
+
         if (m_isWon) {
+            m_gameState = GameState.Finish;
             return;
         }
 
@@ -73,6 +86,7 @@ public class GameLogic {
             if (!canStart) { // player cannot enter into the board
                 System.out.println("Cannot enter into the board");
 
+                m_gameState = GameState.PlayerNotAllowedIn;
                 return;
             }
         }
@@ -80,6 +94,8 @@ public class GameLogic {
         // not a legal move, player's turn complete
         if (!isLegalMove(player.position(), m_die.result())) {
             System.out.println("Not a legal move");
+
+            m_gameState = GameState.CannotMove;
             return;
         }
 
@@ -90,6 +106,7 @@ public class GameLogic {
         playerMovements.add(player.position()); // save position after adding the die value
 
         if (player.position() == 99) {
+            m_gameState = GameState.Finish;
             m_isWon = true;
         } else {
             Cell cell = m_board.cells()[player.position()];
@@ -100,6 +117,7 @@ public class GameLogic {
             }
 
             if (player.position() == 99) { // to handle ladders directly to winning cells
+                m_gameState = GameState.Finish;
                 m_isWon = true;
             }
         }
@@ -107,6 +125,10 @@ public class GameLogic {
         player.setLastSteps(playerMovements);
 
         return;
+    }
+
+    public GameState gameState() {
+        return m_gameState;
     }
 
     public void printState() {
