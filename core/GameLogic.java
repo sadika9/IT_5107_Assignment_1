@@ -90,6 +90,10 @@ public class GameLogic {
                 player.setPosition(cell.moveTo());
                 playerMovements.add(player.position());
             }
+
+            if (player.position() == 99) { // to handle ladders directly to winning cells
+                m_isWon = true;
+            }
         }
 
         player.setLastSteps(playerMovements);
