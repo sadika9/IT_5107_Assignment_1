@@ -6,8 +6,8 @@ public class GameLogic {
     private Board m_board;
     private Die m_die;
     private Player m_players[];
-    private int m_currentPlayer = 0;
-    private int m_nextPlayer = 0;
+    private int m_currentPlayerIndex = 0;
+    private int m_nextPlayerIndex = 0;
     private boolean m_isWon = false;
 
     public void init(int moveTos[], int players) {
@@ -22,7 +22,7 @@ public class GameLogic {
             m_players[i] = player;
         }
 
-        m_currentPlayer = 0;
+        m_currentPlayerIndex = 0;
     }
 
     public Board board() {
@@ -37,8 +37,12 @@ public class GameLogic {
         return m_players;
     }
 
+    public int currentPlayerIndex() {
+        return m_currentPlayerIndex;
+    }
+
     public Player currentPlayer() {
-        return m_players[m_currentPlayer];
+        return m_players[m_currentPlayerIndex];
     }
 
     public boolean isWon() {
@@ -50,16 +54,16 @@ public class GameLogic {
             return;
         }
 
-        m_currentPlayer = m_nextPlayer;
-        Player player = m_players[m_currentPlayer];
+        m_currentPlayerIndex = m_nextPlayerIndex;
+        Player player = m_players[m_currentPlayerIndex];
 
         m_die.roll();
 
         // decide next player
         if (player.isEnteredToBoard() && (m_die.result() == 1 || m_die.result() == 6)) {
-            m_nextPlayer = m_currentPlayer;
+            m_nextPlayerIndex = m_currentPlayerIndex;
         } else {
-            m_nextPlayer = (m_currentPlayer + 1) % m_players.length;
+            m_nextPlayerIndex = (m_currentPlayerIndex + 1) % m_players.length;
         }
 
         // new player
@@ -106,9 +110,9 @@ public class GameLogic {
     }
 
     public void printState() {
-        System.out.println("Player Position\t" + currentPlayer().position());
-        System.out.println("Current Player\t" + m_players[m_currentPlayer].name());
-        System.out.println("Next Player\t" + m_players[m_nextPlayer].name());
+        System.out.println("Player Position\t" +  m_players[m_currentPlayerIndex].position());
+        System.out.println("Current Player\t" + m_players[m_currentPlayerIndex].name());
+        System.out.println("Next Player\t" + m_players[m_nextPlayerIndex].name());
         System.out.println("Die\t\t" + m_die.result());
         System.out.println("--------------------------------------------");
     }
