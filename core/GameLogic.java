@@ -55,7 +55,7 @@ public class GameLogic {
         }
 
         m_currentPlayerIndex = m_nextPlayerIndex;
-        Player player = m_players[m_currentPlayerIndex];
+        Player player = currentPlayer();
 
         m_die.roll();
 
@@ -110,8 +110,8 @@ public class GameLogic {
     }
 
     public void printState() {
-        System.out.println("Player Position\t" +  m_players[m_currentPlayerIndex].position());
-        System.out.println("Current Player\t" + m_players[m_currentPlayerIndex].name());
+        System.out.println("Player Position\t" +  currentPlayer().position());
+        System.out.println("Current Player\t" + currentPlayer().name());
         System.out.println("Next Player\t" + m_players[m_nextPlayerIndex].name());
         System.out.println("Die\t\t" + m_die.result());
         System.out.println("--------------------------------------------");
