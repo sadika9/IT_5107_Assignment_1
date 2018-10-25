@@ -8,7 +8,7 @@ public class GameLogic {
     private Player m_players[];
     private int m_currentPlayer = 0;
     private int m_nextPlayer = 0;
-    boolean m_isWon = false;
+    private boolean m_isWon = false;
 
     public void init(int moveTos[], int players) {
         m_board = new Board(moveTos);
@@ -41,9 +41,13 @@ public class GameLogic {
         return m_players[m_currentPlayer];
     }
 
-    public boolean goToNextState() {
+    public boolean isWon() {
+        return m_isWon;
+    }
+
+    public void goToNextState() {
         if (m_isWon) {
-            return false;
+            return;
         }
 
         m_currentPlayer = m_nextPlayer;
@@ -65,14 +69,14 @@ public class GameLogic {
             if (!canStart) { // player cannot enter into the board
                 System.out.println("Cannot enter into the board");
 
-                return true;
+                return;
             }
         }
 
         // not a legal move, player's turn complete
         if (!isLegalMove(player.position(), m_die.result())) {
             System.out.println("Not a legal move");
-            return true;
+            return;
         }
 
         ArrayList playerMovements = new ArrayList();
@@ -98,7 +102,7 @@ public class GameLogic {
 
         player.setLastSteps(playerMovements);
 
-        return true;
+        return;
     }
 
     public void printState() {

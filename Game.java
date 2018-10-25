@@ -21,7 +21,8 @@ public class Game {
         gameLogic.printState();
         System.out.println("********************************");
 
-        while (gameLogic.goToNextState()) {
+        while (!gameLogic.isWon()) {
+            gameLogic.goToNextState();
             gameLogic.printState();
         }
 
