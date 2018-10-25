@@ -60,9 +60,9 @@ public class GameLogic {
 
         // new player
         if (!player.isEnteredToBoard()) {
-            if (m_die.result() == 1 || m_die.result() == 6) {
-                player.setPosition(0);
-            } else { // player cannot enter into the board
+            boolean canStart = (m_die.result() == 1 || m_die.result() == 6);
+
+            if (!canStart) { // player cannot enter into the board
                 System.out.println("Cannot enter into the board");
 
                 return true;
