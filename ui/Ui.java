@@ -114,8 +114,10 @@ public class Ui {
         m_gameInfoPanel = new JPanel();
         m_gameInfoPanel.setLayout(new BoxLayout(m_gameInfoPanel, BoxLayout.Y_AXIS));
         m_gameInfoPanel.add(new JScrollPane(m_playerList));
+        m_gameInfoPanel.add(Box.createVerticalGlue());
         m_gameInfoPanel.add(m_rollButton);
         m_gameInfoPanel.add(m_dieResultLabel);
+        m_gameInfoPanel.add(Box.createVerticalGlue());
     }
 
     private void playRound() {
