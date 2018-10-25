@@ -1,4 +1,7 @@
-import core.*;
+import java.util.Random;
+
+import core.GameLogic;
+import ui.Ui;
 
 public class Game {
     static int moveTos[] = {
@@ -15,17 +18,48 @@ public class Game {
     };
 
     public static void main(String[] args) {
+        int settings[] = Ui.askGameSettings();
+
+        setupLadders(moveTos, settings[1]);
+        setupSnakes(moveTos, settings[2]);
+
         GameLogic gameLogic = new GameLogic();
-        gameLogic.init(moveTos, 2);
+        gameLogic.init(moveTos, settings[0]);
 
-        gameLogic.printState();
-        System.out.println("********************************");
+        Ui ui = new Ui(gameLogic, moveTos);
+    }
 
-        while (!gameLogic.isWon()) {
-            gameLogic.goToNextState();
-            gameLogic.printState();
+    private static void setupLadders(int moveTos[], int limit) {
+        Random generator = new Random();
+
+        int count = 0;
+        while (count < limit) {
+            int start = generator.nextInt(90);
+            int end = generator.nextInt(100);
+
+            if (start >= end) {
+                continue;
+            }
+
+            moveTos[start] = end;
+            count++;
         }
+    }
 
-        System.out.println(gameLogic.currentPlayer().name() + " won");
+    private static void setupSnakes(int moveTos[], int limit) {
+        Random generator = new Random();
+
+        int count = 0;
+        while (count < limit) {
+            int start = generator.nextInt(90);
+            int end = generator.nextInt(100);
+
+            if (start <= end) {
+                continue;
+            }
+
+            moveTos[start] = end;
+            count++;
+        }
     }
 }
